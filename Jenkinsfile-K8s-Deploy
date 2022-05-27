@@ -42,18 +42,15 @@ pipeline {
       }
     }
    
-    stage ('K8S Deploy') {
-        steps {
-            script {
-                kubernetesDeploy(
-                    configs: 'k8s-deployment.yaml',
-                    kubeconfigId: 'K8S',
-                    enableConfigSubstitution: true
-                    )           
-               
+   stage('K8S Deploy') {
+     steps{
+      script {
+        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', serverUrl: '') {
+        sh ('kubectl apply -f kubernetes_files')
+                    }
+                   }
+                }
             }
-        }
-    }
   
     }  
 }
